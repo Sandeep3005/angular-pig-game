@@ -142,7 +142,7 @@ i {
 
 
 /*****INPUT BOX **********/
-.final-score {
+.win-score {
    position: absolute;
    left: 50%;
    transform: translateX(-50%);

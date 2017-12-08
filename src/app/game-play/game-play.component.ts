@@ -1,3 +1,4 @@
+
 import { ViewChild,Component, OnInit, ElementRef } from '@angular/core';
 
 
@@ -8,54 +9,119 @@ import { ViewChild,Component, OnInit, ElementRef } from '@angular/core';
 })
 export class GamePlayComponent implements OnInit {
 
-  @ViewChild('finalScoreInput') finalScoreInput: ElementRef;
+  @ViewChild('winScoreInput') winScoreInput: ElementRef;
 
-  playersScore: Array<number>;
-  roundScore;
+  playersScore;
+  poolScore;
   diceScore: number
-  activePlayer: number;
-  finalScore: number;
-  showDice: boolean;
-  isGameActive: boolean;
+  activePlayerId: number;
+  winScore: number;
+  isGameStarted: boolean;
+  // Take input from module
+  vsAI: boolean;
+  winnerId: number;
+  intervalCntrl;
 
   constructor() { }
 
   ngOnInit() {
     this.onGameInit();
-  }
-
-  onSetScore() {
-    this.finalScore = this.finalScoreInput.nativeElement.value;
-    this.isGameActive = true;
-    this.showDice = true;
+    this.vsAI = true;
   }
 
   onGameInit() {
-    this.playersScore = [0, 0];
-    this.roundScore = { player0: 0, player1: 0 };
-    this.activePlayer = 0;
-    this.finalScore = 0;
-    this.showDice = false;
-    this.isGameActive = false;
+    this.playersScore = { p0: 0, p1: 0 };
+    this.poolScore = { p0: 0, p1: 0 };
+    this.winScore = 0;
     this.diceScore = 5;
-    this.finalScoreInput.nativeElement.focus();
+    this.winScoreInput.nativeElement.focus();
+    this.isGameStarted = false;
+    this.activePlayerId = 0;
+    this.winnerId = -1;
+  }
+
+  onSetScore() {
+    this.winScore = this.winScoreInput.nativeElement.value;
+    this.isGameStarted = true;
   }
 
   onDiceRoll() {
     this.diceScore = Math.floor(Math.random() * 6) + 1;
+    console.log('dice is rolled - Value  = ', this.diceScore);
+    let { activePlayerId: id, vsAI } = this;
     if (this.diceScore === 1) {
-      this.roundScore[`player${this.activePlayer}`] = 0;
-      this.activePlayer = 1 - this.activePlayer;  // Toggle between 0 and 1
+      this.poolScore[`p${id}`] = 0;
+      this.toggleActivePlayer();
     } else {
-      this.roundScore[`player${this.activePlayer}`] += this.diceScore;
+      this.poolScore[`p${id}`] += this.diceScore;
     }
   }
 
   onScoreHold() {
-    let { roundScore, activePlayer } = this;
-    this.playersScore[activePlayer] = roundScore[`player${this.activePlayer}`];
-    this.roundScore[`player${this.activePlayer}`] = 0;
-    this.activePlayer = 1 - activePlayer;  // Toggle between 0 and 1
+    let { poolScore, activePlayerId: id } = this;
+    this.playersScore[`p${id}`] += poolScore[`p${id}`];
+    this.poolScore[`p${id}`] = 0;
+    if (this.isWinner()) return this.onGameEnd();
+    this.toggleActivePlayer()  // Toggle between 0 and 1
   }
+
+
+  isWinner() {
+    let { activePlayerId: id, winScore } = this;
+    if (winScore <= this.poolScore[`p${id}`] + this.playersScore[`p${id}`]) return true;
+  }
+
+  onGameEnd() {
+    clearInterval(this.intervalCntrl);
+    this.winnerId = this.activePlayerId;
+    this.isGameStarted = false;
+  }
+
+  provideClasses(playerId: number) {
+    let { isGameStarted, activePlayerId, winnerId } = this;
+    if (playerId === winnerId) return "winner";
+    if (playerId === activePlayerId) return "active";
+  }
+
+  toggleActivePlayer() {
+    this.activePlayerId = 1 - this.activePlayerId;
+    if (!this.vsAI || this.activePlayerId !== 1) {
+      clearInterval(this.intervalCntrl)
+      return;
+    };
+    //This is running means this is AI turn
+    this.intervalCntrl = setInterval(() => {
+      this.rollForAI();
+    }, 1000)
+  }
+
+  rollForAI() {
+    let shouldRoll = this.shouldRoll();
+    if (shouldRoll) {
+      this.onDiceRoll();
+    } else {
+      this.onScoreHold();
+    }
+  }
+
+  shouldRoll(): boolean {
+    let { winScore } = this;
+    console.log(winScore, this.playersScore, this.poolScore);
+    let myMainScore = this.playersScore.p1;
+    let myPoolScore = this.poolScore.p1;
+    let enemyMainScore = this.poolScore.p0;
+
+    console.log(winScore, myMainScore, myPoolScore, enemyMainScore);
+    if (myMainScore + myPoolScore >= winScore) {
+      return false;
+    }
+    let myLead = myMainScore - enemyMainScore;
+    let wantPool = (myMainScore < 80 && enemyMainScore >= 80) ? 30   // Imminent loss, be aggressive.
+                 : (myMainScore >= 80 && (0 < myLead && myLead <= 10)) ? 15 // Comfortable lead
+                 : 20;
+                                           // General case
+    return myPoolScore < wantPool;
+  }
+
 
 }
