@@ -139,7 +139,7 @@ i {
 
 .winner { background-color: #f7f7f7; }
 .winner .player-name { font-weight: 500; color: #EB4D4D; }
-
+.winner-caption { font-weight: 500; color: #EB4D4D; text-align: center }
 
 /*****INPUT BOX **********/
 .win-score {

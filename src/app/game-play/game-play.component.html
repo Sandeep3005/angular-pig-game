@@ -5,7 +5,10 @@
     </app-dialog-container>
     <div class="player-0-panel"
       [ngClass]="this.provideClasses(0)">
-      <div class="player-name" id="name-0">{{player[0].name}}</div>
+      <div>
+        <div class="winner-caption" *ngIf="winnerId == 0">WINNER</div>
+        <div class="player-name" id="name-0">{{player[0].name}}</div>
+      </div>
       <div class="player-score" id="score-0">{{playersScore.p0}}</div>
       <div class="player-current-box">
         <div class="player-current-label">Current</div>
@@ -15,6 +18,7 @@
 
 
     <div class="player-1-panel" [ngClass]="this.provideClasses(1)">
+      <div class="winner-caption" *ngIf="winnerId == 1">WINNER</div>
       <div class="player-name" id="name-1">{{player[1].name}}</div>
       <div class="player-score" id="score-1">{{playersScore.p1}}</div>
       <div class="player-current-box">
@@ -27,14 +31,23 @@
     <button class="btn-new" (click)="onGameInit()">
       <i class="ion-ios-plus-outline"></i>New game
     </button>
-    <button class="btn-roll" *ngIf="isGameStarted" (click)="onDiceRoll()">
+    <button
+      [disabled]="vsAI && activePlayerId == 1"
+      class="btn-roll"
+      *ngIf="isGameStarted"
+      (click)="onDiceRoll()">
       <i class="ion-ios-loop"></i>Roll dice
     </button>
-    <button class="btn-hold" *ngIf="isGameStarted" (click)="onScoreHold()">
+    <button
+      [disabled]="vsAI && activePlayerId == 1"
+      class="btn-hold"
+      *ngIf="isGameStarted"
+      (click)="onScoreHold()">
       <i class="ion-ios-download-outline"></i>Hold
     </button>
     <input
       (keyup)="onSetScore()"
+      [disabled]="isGameStarted"
       #winScoreInput
       class="win-score" type="number" placeholder="Set Win Score">
 

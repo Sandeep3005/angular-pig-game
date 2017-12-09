@@ -6,9 +6,9 @@
     Read game rules here
   </div>
   <form #playerForm="ngForm" (ngSubmit)="onSubmit(playerForm)">
-    <mat-form-field class="main-form">
+    <mat-form-field class="main-form" color="warn">
       <input
-         required
+        required
         matInput 
         tabindex="1" 
         placeholder="Total Players" 
@@ -18,7 +18,7 @@
         (keyup)="onTotalPlayerChange(totalPlayerInput)"
         [ngModel]="basicPlayerInfo.totalPlayers"/>
     </mat-form-field>
-    <mat-form-field class="main-form">
+    <mat-form-field class="main-form" color="warn">
       <input
         required
         matInput 
@@ -30,6 +30,7 @@
         />
     </mat-form-field>
     <mat-form-field 
+      color="warn"
       class="main-form" 
       *ngIf="this.basicPlayerInfo.totalPlayers == 2">
       <input
@@ -48,7 +49,7 @@
         type="submit"
         class="main-btn" 
         mat-raised-button 
-        color="primary" 
+        color="warn"
         tabindex="-1">
         Play
       </button>

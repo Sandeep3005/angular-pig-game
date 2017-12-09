@@ -1,7 +1,9 @@
 import { ViewChild,Component, OnInit, ElementRef } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import * as _ from 'underscore';
+
 import { PlayerInfoService } from './../shared/player-info.service';
 import { Player } from '../shared/player.modal';
-
 
 @Component({
   selector: 'app-game-play',
@@ -25,11 +27,12 @@ export class GamePlayComponent implements OnInit {
   intervalCntrl;
   openDialog: boolean;
 
-  constructor(private playerService: PlayerInfoService) { }
+  constructor(
+    private playerService: PlayerInfoService,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.onGameInit();
-    this.vsAI = true;
   }
 
   onGameInit() {
@@ -45,13 +48,23 @@ export class GamePlayComponent implements OnInit {
   }
 
   onSetScore() {
-    this.winScore = this.winScoreInput.nativeElement.value;
-    this.isGameStarted = true;
+    let winScore = this.winScoreInput.nativeElement.value;
+    let condition = [0, 1].includes(this.winnerId) || winScore <= 0;
+    if (condition) {
+      this.snackBar.open('Press New Game to continue', '',{ duration: 2000 });
+      return;
+    }
+    let activateGame = _.debounce(() => {
+      this.winScore = winScore;
+      this.isGameStarted = true;
+    }, 1000);
+
+    activateGame();
   }
 
   onDiceRoll() {
     this.diceScore = Math.floor(Math.random() * 6) + 1;
-    console.log('dice is rolled - Value  = ', this.diceScore);
+    //console.log('dice is rolled - Value  = ', this.diceScore);
     let { activePlayerId: id, vsAI } = this;
     if (this.diceScore === 1) {
       this.poolScore[`p${id}`] = 0;
@@ -110,12 +123,12 @@ export class GamePlayComponent implements OnInit {
 
   shouldRoll(): boolean {
     let { winScore } = this;
-    console.log(winScore, this.playersScore, this.poolScore);
+    //console.log(winScore, this.playersScore, this.poolScore);
     let myMainScore = this.playersScore.p1;
     let myPoolScore = this.poolScore.p1;
     let enemyMainScore = this.poolScore.p0;
 
-    console.log(winScore, myMainScore, myPoolScore, enemyMainScore);
+    //console.log(winScore, myMainScore, myPoolScore, enemyMainScore);
     if (myMainScore + myPoolScore >= winScore) {
       return false;
     }
@@ -128,14 +141,18 @@ export class GamePlayComponent implements OnInit {
   }
 
   onDialogClosed() {
-    console.log('dialog is closed');
+
+    this.vsAI = false;
     this.player = [];
     this.openDialog = false;
     this.playerService.getPlayers().forEach((p) => {
       this.player.push({ name: p});
     })
-    console.log(this.player.length);
-    if (this.player.length === 1) this.player.push({ name: "Computer" });
+    //console.log(this.player.length);
+    if (this.player.length === 1) {
+      this.player.push({ name: "Computer" });
+      this.vsAI = true;
+    }
   }
 
 

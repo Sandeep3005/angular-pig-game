@@ -12,11 +12,15 @@ export class DialogContentComponent {
     public dialogRef: MatDialogRef<DialogContentComponent>,
     public snackBar: MatSnackBar) { }
 
-  basicPlayerInfo = {
-    totalPlayers: 1,
-    player1Name: 'Player 1',
-  }
-  getInputTimeout: any=100;
+    getInputTimeout: any = 100;
+    basicPlayerInfo;
+
+    ngOnInit() {
+      this.basicPlayerInfo = {
+        totalPlayers: 1,
+        player1Name: 'Player 1',
+      }
+    }
 
   onSubmit(playerForm) {
     let { totalPlayers, playerName1, playerName2 } = playerForm.value;

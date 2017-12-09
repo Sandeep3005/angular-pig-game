@@ -19,6 +19,7 @@ export class DialogContainerComponent {
     private playerService: PlayerInfoService
   ) { }
 
+
   ngOnInit() {
     setTimeout(() => this.openDialog(), 500);
   }
@@ -29,12 +30,14 @@ export class DialogContainerComponent {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
       let players = [];
-      for (let i = 0; i < result.totalPlayers; i++) {
-        players.push(result[`player${i+1}Name`])
+      if (!result) {
+        players.push('Player 1');
+      } else {
+        for (let i = 0; i < result.totalPlayers; i++) {
+          players.push(result[`player${i + 1}Name`])
+        }
       }
-      console.log(players);
       this.playerService.setPlayers(players);   
       this.onDialogClosed.emit()
     });

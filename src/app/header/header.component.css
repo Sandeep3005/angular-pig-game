@@ -32,7 +32,8 @@
   text-decoration: none;
   display: block;
   transition: .3s background-color;
-  color: black;
+  color: #e94e51;
+  text-transform: uppercase;
 }
 
 .nav a:hover {
