@@ -1,5 +1,6 @@
-
 import { ViewChild,Component, OnInit, ElementRef } from '@angular/core';
+import { PlayerInfoService } from './../shared/player-info.service';
+import { Player } from '../shared/player.modal';
 
 
 @Component({
@@ -11,6 +12,7 @@ export class GamePlayComponent implements OnInit {
 
   @ViewChild('winScoreInput') winScoreInput: ElementRef;
 
+  player: Array<Player> =  [{ name: 'Player 1'}, { name: 'Player 2'}];
   playersScore;
   poolScore;
   diceScore: number
@@ -21,8 +23,9 @@ export class GamePlayComponent implements OnInit {
   vsAI: boolean;
   winnerId: number;
   intervalCntrl;
+  openDialog: boolean;
 
-  constructor() { }
+  constructor(private playerService: PlayerInfoService) { }
 
   ngOnInit() {
     this.onGameInit();
@@ -30,6 +33,7 @@ export class GamePlayComponent implements OnInit {
   }
 
   onGameInit() {
+    this.openDialog = true;
     this.playersScore = { p0: 0, p1: 0 };
     this.poolScore = { p0: 0, p1: 0 };
     this.winScore = 0;
@@ -121,6 +125,17 @@ export class GamePlayComponent implements OnInit {
                  : 20;
                                            // General case
     return myPoolScore < wantPool;
+  }
+
+  onDialogClosed() {
+    console.log('dialog is closed');
+    this.player = [];
+    this.openDialog = false;
+    this.playerService.getPlayers().forEach((p) => {
+      this.player.push({ name: p});
+    })
+    console.log(this.player.length);
+    if (this.player.length === 1) this.player.push({ name: "Computer" });
   }
 
 

@@ -1,7 +1,11 @@
 <div class=" game-play wrapper clearfix">
+    <app-dialog-container
+      *ngIf="openDialog"
+      (onDialogClosed)="onDialogClosed()">
+    </app-dialog-container>
     <div class="player-0-panel"
       [ngClass]="this.provideClasses(0)">
-      <div class="player-name" id="name-0">Player 1</div>
+      <div class="player-name" id="name-0">{{player[0].name}}</div>
       <div class="player-score" id="score-0">{{playersScore.p0}}</div>
       <div class="player-current-box">
         <div class="player-current-label">Current</div>
@@ -11,7 +15,7 @@
 
 
     <div class="player-1-panel" [ngClass]="this.provideClasses(1)">
-      <div class="player-name" id="name-1">Player 2</div>
+      <div class="player-name" id="name-1">{{player[1].name}}</div>
       <div class="player-score" id="score-1">{{playersScore.p1}}</div>
       <div class="player-current-box">
         <div class="player-current-label">Current</div>

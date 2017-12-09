@@ -1,0 +1,16 @@
+.top-header, .content, .main-form, .main-btn {
+  font-family: 'Lato';
+}
+
+.content-section-1 {
+  padding: 10px 10px 10px 0px;
+  line-height: 25px;
+}
+
+.main-form {
+  width: 100%;
+}
+
+.main-btn {
+  float: right;
+}

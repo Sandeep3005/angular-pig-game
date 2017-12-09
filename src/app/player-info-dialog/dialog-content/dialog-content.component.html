@@ -1,0 +1,57 @@
+<h2 mat-dialog-title class="top-header">Welcome to PIG GAME</h2>
+<div mat-dialog-content class="content">
+  <div class="content-section-1">
+    A simple fun game for maximum 2 Players.
+    <br>
+    Read game rules here
+  </div>
+  <form #playerForm="ngForm" (ngSubmit)="onSubmit(playerForm)">
+    <mat-form-field class="main-form">
+      <input
+         required
+        matInput 
+        tabindex="1" 
+        placeholder="Total Players" 
+        type="text"
+        #totalPlayerInput
+        name="totalPlayers"
+        (keyup)="onTotalPlayerChange(totalPlayerInput)"
+        [ngModel]="basicPlayerInfo.totalPlayers"/>
+    </mat-form-field>
+    <mat-form-field class="main-form">
+      <input
+        required
+        matInput 
+        tabindex="2" 
+        placeholder="Player Name 1" 
+        type="text"
+        name="playerName1"
+        [ngModel]="basicPlayerInfo.player1Name"
+        />
+    </mat-form-field>
+    <mat-form-field 
+      class="main-form" 
+      *ngIf="this.basicPlayerInfo.totalPlayers == 2">
+      <input
+        required
+        matInput 
+        tabindex="3" 
+        placeholder="Player Name 2" 
+        type="text" 
+        name="playerName2" 
+        [ngModel]="basicPlayerInfo.player2Name"
+      />
+    </mat-form-field>
+    <span>
+      <button
+        [disabled]="!playerForm.valid"
+        type="submit"
+        class="main-btn" 
+        mat-raised-button 
+        color="primary" 
+        tabindex="-1">
+        Play
+      </button>
+    </span>
+  </form>
+</div>
