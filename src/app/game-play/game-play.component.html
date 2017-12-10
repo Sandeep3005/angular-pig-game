@@ -7,7 +7,7 @@
       [ngClass]="this.provideClasses(0)">
       <div>
         <div class="winner-caption" *ngIf="winnerId == 0">WINNER</div>
-        <div class="player-name" id="name-0">{{player[0].name}}</div>
+        <div class="player-name" id="name-0">{{player[0].name | shortName}}</div>
       </div>
       <div class="player-score" id="score-0">{{playersScore.p0}}</div>
       <div class="player-current-box">

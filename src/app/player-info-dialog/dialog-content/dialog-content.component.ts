@@ -41,6 +41,6 @@ export class DialogContentComponent {
         return this.openSnackBar();
       }
       this.basicPlayerInfo.totalPlayers = totalPlayerInput.value;
-    }, 1000) 
+    }, 600)
   }
 }

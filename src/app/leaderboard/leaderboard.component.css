@@ -1,0 +1,17 @@
+div {
+  font-family: 'Lato';
+  font-size: 20px;
+  color: white;
+}
+
+.container {
+  margin-top: 30px;
+}
+
+.leaderboard-header {
+  margin-top: 15px;
+}
+
+.player-name,.player-against,.player-rank {
+  padding-left: 30px;
+}

@@ -4,14 +4,14 @@
   font-family: 'Lato';
   font-weight: 400;
   display: flow-root;
-  border-bottom: 1px solid black;
+  box-shadow: 10px 10px 34px -5px rgba(56,50,51,0.9);
 }
 
 .game {
   float: left;
 }
 
-.rules {
+.links-on-right {
   float: right;
 }
 
@@ -32,7 +32,7 @@
   text-decoration: none;
   display: block;
   transition: .3s background-color;
-  color: #e94e51;
+  color: #984445;
   text-transform: uppercase;
 }
 
@@ -50,7 +50,7 @@
 
 @media screen and (min-width: 600px) {
   .nav li {
-    width: 250px;
+    width: 180px;
     border-bottom: none;
     height: 50px;
     line-height: 50px;

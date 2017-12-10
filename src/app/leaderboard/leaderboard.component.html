@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row leaderboard-heading">
+    <div class="col-xs-12 text-center">Player Stats</div>
+  </div>
+  <div class="row leaderboard-header">
+    <div class="col-xs-1"></div>
+    <div class="player-name col-xs-4">Winner</div>
+    <div class="player-against col-xs-4">Against</div>
+    <div class="player-rank col-xs-2">Rank</div>
+    <div class="col-xs-1"></div>
+  </div>
+  <hr>
+  <div class="row leaderboard-data" *ngFor="let player of playersData; let i=index">
+    <div class="col-xs-1"></div>
+    <div class="player-name col-xs-4">{{player.name}}</div>
+    <div class="player-against col-xs-4">{{player.against}}</div>
+    <div class="player-rank col-xs-2">{{i+1}}</div>
+    <div class="col-xs-1"></div>
+  </div>
+</div>
+

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material.module';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { RulesComponent } from './rules/rules.component';
@@ -12,11 +13,15 @@ import { DialogContainerComponent } from './player-info-dialog/dialog-container/
 import { DialogContentComponent } from './player-info-dialog/dialog-content/dialog-content.component';
 import { FormsModule } from '@angular/forms';
 import { PlayerInfoService } from './shared/player-info.service';
+import { LeaderboardService } from './shared/leaderboard.service';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { ShortNamePipe } from './shared/short-name.pipe';
 
 const appRoutes:Routes = [
   { path: '', redirectTo: 'rules', pathMatch: 'full' },
   { path: 'rules', component: RulesComponent},
   { path: 'game-play', component: GamePlayComponent },
+  {path: 'leaderboard', component: LeaderboardComponent}
 ]
 
 @NgModule({
@@ -26,21 +31,25 @@ const appRoutes:Routes = [
     GamePlayComponent,
     HeaderComponent,
     DialogContainerComponent,
-    DialogContentComponent
+    DialogContentComponent,
+    LeaderboardComponent,
+    ShortNamePipe
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    HttpClientModule
   ],
   entryComponents: [
     DialogContentComponent,
     DialogContainerComponent
   ],
   providers: [
-    PlayerInfoService
+    PlayerInfoService,
+    LeaderboardService
   ],
   bootstrap: [AppComponent]
 })
