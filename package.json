@@ -13,7 +13,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/cli": "1.5.0",
+    "@angular/cli": "1.5.3",
     "@angular/animations": "^5.1.0",
     "@angular/cdk": "^5.0.0",
     "@angular/common": "^5.0.0",
